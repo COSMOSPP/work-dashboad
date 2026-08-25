@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   LineChart, Line, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
   BarChart, Bar, PieChart, Pie, Cell, Legend
 } from 'recharts';
 import { DashboardPanel } from './DashboardPanel';
 import { employmentDestinationsData, employmentRolesData, employmentRegionsData } from '../mockData';
+import { ChevronDown, Check } from 'lucide-react';
 
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
@@ -25,11 +26,82 @@ const CustomTooltip = ({ active, payload, label }: any) => {
   return null;
 };
 
-const PeriodSelect = () => (
-  <select className="bg-[#0a1532] border border-[#1e3a8a] text-slate-300 text-xs px-2 py-1 outline-none">
-    <option>近6期</option>
-  </select>
-);
+interface PeriodSelectProps {
+  value?: string;
+  onChange?: (val: string) => void;
+}
+
+const periodOptions = [
+  { label: '近6期', value: '6' },
+  { label: '近3期', value: '3' },
+  { label: '近12期', value: '12' },
+];
+
+const PeriodSelect = ({ value = '6', onChange }: PeriodSelectProps) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [selected, setSelected] = useState(value);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const currentOption = periodOptions.find((opt) => opt.value === selected) || periodOptions[0];
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const handleSelect = (val: string) => {
+    setSelected(val);
+    setIsOpen(false);
+    if (onChange) onChange(val);
+  };
+
+  return (
+    <div ref={containerRef} className="relative z-30">
+      <button
+        type="button"
+        onClick={() => setIsOpen(!isOpen)}
+        className={`bg-[#071129] border transition-all duration-200 text-slate-200 text-[11px] px-2.5 py-1 rounded flex items-center space-x-1 shadow-sm outline-none cursor-pointer ${
+          isOpen
+            ? 'border-cyan-500 shadow-[0_0_8px_rgba(6,182,212,0.3)] bg-[#0d1b3e]'
+            : 'border-[#1e3a8a] hover:border-cyan-500/60 hover:bg-[#0a1838]'
+        }`}
+      >
+        <span className="font-medium text-slate-200">{currentOption.label}</span>
+        <ChevronDown
+          size={12}
+          className={`text-cyan-400 transition-transform duration-200 ${isOpen ? 'rotate-180 text-cyan-300' : ''}`}
+        />
+      </button>
+
+      {isOpen && (
+        <div className="absolute top-full right-0 mt-1 w-24 z-50 bg-[#0a1738]/95 border border-cyan-500/50 shadow-[0_10px_25px_rgba(0,0,0,0.8)] rounded-md py-1 overflow-hidden backdrop-blur-md animate-in fade-in zoom-in-95 duration-100">
+          {periodOptions.map((opt) => {
+            const isSelected = opt.value === selected;
+            return (
+              <div
+                key={opt.value}
+                onClick={() => handleSelect(opt.value)}
+                className={`px-2.5 py-1 text-[11px] transition-colors flex items-center justify-between cursor-pointer ${
+                  isSelected
+                    ? 'bg-[#1e3a8a] text-cyan-300 font-semibold'
+                    : 'text-slate-300 hover:bg-[#142858] hover:text-slate-100'
+                }`}
+              >
+                <span>{opt.label}</span>
+                {isSelected && <Check size={11} className="text-cyan-400" />}
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+};
 
 export const EnrollmentTrendChart = ({ data }: { data: any[] }) => (
   <DashboardPanel 

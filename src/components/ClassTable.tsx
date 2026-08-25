@@ -1,8 +1,10 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { DashboardPanel } from './DashboardPanel';
 import { 
   ChevronLeft, 
   ChevronRight, 
+  ChevronDown,
+  Check,
   Search, 
   AlertTriangle, 
   CheckCircle2, 
@@ -29,6 +31,66 @@ interface ClassRow {
   status?: string;
   campus?: string;
   alertReason?: string;
+}
+
+function PageSizeSelect({ value, onChange }: { value: number; onChange: (val: number) => void }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const options = [
+    { label: '5条/页', value: 5 },
+    { label: '10条/页', value: 10 },
+    { label: '15条/页', value: 15 },
+  ];
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const currentOption = options.find((opt) => opt.value === value) || options[0];
+
+  return (
+    <div ref={containerRef} className="relative ml-2">
+      <button
+        type="button"
+        onClick={() => setIsOpen(!isOpen)}
+        className={`bg-[#071129] border transition-all duration-200 text-slate-300 text-[10px] px-2 py-0.5 rounded flex items-center space-x-1 outline-none cursor-pointer ${
+          isOpen ? 'border-cyan-500 bg-[#0d1b3e]' : 'border-[#1e3a8a] hover:border-cyan-500/60'
+        }`}
+      >
+        <span>{currentOption.label}</span>
+        <ChevronDown size={11} className={`text-cyan-400 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
+      </button>
+
+      {isOpen && (
+        <div className="absolute bottom-full right-0 mb-1 w-20 z-50 bg-[#0a1738]/95 border border-cyan-500/50 shadow-[0_10px_25px_rgba(0,0,0,0.8)] rounded py-1 overflow-hidden backdrop-blur-md">
+          {options.map((opt) => {
+            const isSelected = opt.value === value;
+            return (
+              <div
+                key={opt.value}
+                onClick={() => {
+                  onChange(opt.value);
+                  setIsOpen(false);
+                }}
+                className={`px-2 py-1 text-[10px] flex items-center justify-between cursor-pointer ${
+                  isSelected ? 'bg-[#1e3a8a] text-cyan-300 font-semibold' : 'text-slate-300 hover:bg-[#142858] hover:text-slate-100'
+                }`}
+              >
+                <span>{opt.label}</span>
+                {isSelected && <Check size={10} className="text-cyan-400" />}
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
 }
 
 export function ClassTable({ data }: { data: ClassRow[] }) {
@@ -301,15 +363,13 @@ export function ClassTable({ data }: { data: ClassRow[] }) {
             <ChevronRight size={14} />
           </button>
 
-          <select
+          <PageSizeSelect
             value={pageSize}
-            onChange={handlePageSizeChange}
-            className="bg-[#0a1532] border border-[#1e3a8a] text-slate-300 ml-2 px-1.5 py-0.5 rounded outline-none text-[10px]"
-          >
-            <option value={5}>5条/页</option>
-            <option value={10}>10条/页</option>
-            <option value={15}>15条/页</option>
-          </select>
+            onChange={(val) => {
+              setPageSize(val);
+              setCurrentPage(1);
+            }}
+          />
         </div>
       </div>
 
