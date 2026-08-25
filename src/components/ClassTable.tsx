@@ -188,17 +188,17 @@ export function ClassTable({ data }: { data: ClassRow[] }) {
       </div>
 
       {/* Table Content */}
-      <div className="flex-1 overflow-auto custom-scrollbar min-h-0 border border-[#1e3a8a]/40 rounded">
-        <table className="w-full text-left text-[11px] border-collapse">
+      <div className="flex-1 overflow-x-auto overflow-y-auto custom-scrollbar min-h-0 border border-[#1e3a8a]/40 rounded">
+        <table className="w-full min-w-[620px] text-left text-[11px] border-collapse">
           <thead className="bg-[#102347] text-slate-400 sticky top-0 z-10">
             <tr>
-              <th className="py-2 px-3 font-medium">班级名称</th>
-              <th className="py-2 px-2 font-medium">课程名称</th>
-              <th className={`py-2 px-2 font-medium ${activeTab === 'count' ? 'text-amber-300 font-bold bg-amber-950/20' : ''}`}>在训人数</th>
-              <th className={`py-2 px-2 font-medium ${activeTab === 'attendance' ? 'text-cyan-300 font-bold bg-cyan-950/20' : ''}`}>平均出勤率</th>
-              <th className={`py-2 px-2 font-medium ${activeTab === 'completion' ? 'text-emerald-300 font-bold bg-emerald-950/20' : ''}`}>完课率</th>
-              <th className={`py-2 px-2 font-medium ${activeTab === 'passRate' ? 'text-blue-300 font-bold bg-blue-950/20' : ''}`}>通过率</th>
-              <th className="py-2 px-2 font-medium">状态/评价</th>
+              <th className="py-2 px-3 font-medium whitespace-nowrap">班级名称</th>
+              <th className="py-2 px-2 font-medium whitespace-nowrap">课程名称</th>
+              <th className={`py-2 px-2 font-medium whitespace-nowrap ${activeTab === 'count' ? 'text-amber-300 font-bold bg-amber-950/20' : ''}`}>在训人数</th>
+              <th className={`py-2 px-2 font-medium whitespace-nowrap ${activeTab === 'attendance' ? 'text-cyan-300 font-bold bg-cyan-950/20' : ''}`}>平均出勤率</th>
+              <th className={`py-2 px-2 font-medium whitespace-nowrap ${activeTab === 'completion' ? 'text-emerald-300 font-bold bg-emerald-950/20' : ''}`}>完课率</th>
+              <th className={`py-2 px-2 font-medium whitespace-nowrap ${activeTab === 'passRate' ? 'text-blue-300 font-bold bg-blue-950/20' : ''}`}>通过率</th>
+              <th className="py-2 px-2 font-medium whitespace-nowrap">状态/评价</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-[#1e3a8a]/30">
@@ -213,36 +213,36 @@ export function ClassTable({ data }: { data: ClassRow[] }) {
                       isWarningRow && activeTab === 'warning' ? 'bg-rose-950/15 hover:bg-rose-900/30' : ''
                     }`}
                   >
-                    <td className="py-2.5 px-3 max-w-[130px]">
+                    <td className="py-2.5 px-3 max-w-[140px] whitespace-nowrap">
                       <div className="font-medium truncate text-slate-100 group-hover:text-cyan-300 transition-colors flex items-center space-x-1">
                         {isWarningRow && <AlertTriangle size={11} className="text-amber-400 flex-shrink-0" />}
                         <span className="truncate">{row.className}</span>
                       </div>
                     </td>
-                    <td className="py-2.5 px-2 truncate max-w-[100px] text-slate-300">{row.courseName}</td>
-                    <td className={`py-2.5 px-2 font-mono ${activeTab === 'count' ? 'text-amber-400 font-semibold bg-amber-950/10' : ''}`}>
+                    <td className="py-2.5 px-2 truncate max-w-[110px] whitespace-nowrap text-slate-300">{row.courseName}</td>
+                    <td className={`py-2.5 px-2 font-mono whitespace-nowrap ${activeTab === 'count' ? 'text-amber-400 font-semibold bg-amber-950/10' : ''}`}>
                       {row.count}人
                     </td>
-                    <td className={`py-2.5 px-2 font-mono ${activeTab === 'attendance' ? 'text-cyan-400 font-bold bg-cyan-950/10' : 'text-cyan-400/90'}`}>
+                    <td className={`py-2.5 px-2 font-mono whitespace-nowrap ${activeTab === 'attendance' ? 'text-cyan-400 font-bold bg-cyan-950/10' : 'text-cyan-400/90'}`}>
                       {row.attendance}%
                     </td>
-                    <td className={`py-2.5 px-2 font-mono ${activeTab === 'completion' ? 'text-emerald-400 font-bold bg-emerald-950/10' : 'text-slate-300'}`}>
+                    <td className={`py-2.5 px-2 font-mono whitespace-nowrap ${activeTab === 'completion' ? 'text-emerald-400 font-bold bg-emerald-950/10' : 'text-slate-300'}`}>
                       {row.completion}%
                     </td>
-                    <td className={`py-2.5 px-2 font-mono ${activeTab === 'passRate' ? 'text-blue-400 font-bold bg-blue-950/10' : 'text-slate-300'}`}>
+                    <td className={`py-2.5 px-2 font-mono whitespace-nowrap ${activeTab === 'passRate' ? 'text-blue-400 font-bold bg-blue-950/10' : 'text-slate-300'}`}>
                       {row.passRate}%
                     </td>
-                    <td className="py-2.5 px-2 font-mono">
+                    <td className="py-2.5 px-2 font-mono whitespace-nowrap">
                       {row.status === '需关注' || isWarningRow ? (
-                        <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-sans font-medium bg-rose-500/20 text-rose-300 border border-rose-500/40">
+                        <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-sans font-medium bg-rose-500/20 text-rose-300 border border-rose-500/40 whitespace-nowrap">
                           需关注
                         </span>
                       ) : row.status === '优秀' ? (
-                        <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-sans font-medium bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
+                        <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-sans font-medium bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 whitespace-nowrap">
                           优秀 ({row.eval}分)
                         </span>
                       ) : (
-                        <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-sans font-medium bg-blue-500/15 text-blue-300 border border-blue-500/30">
+                        <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-sans font-medium bg-blue-500/15 text-blue-300 border border-blue-500/30 whitespace-nowrap">
                           {row.eval}分
                         </span>
                       )}
@@ -252,7 +252,7 @@ export function ClassTable({ data }: { data: ClassRow[] }) {
               })
             ) : (
               <tr>
-                <td colSpan={7} className="py-8 text-center text-slate-500 text-[12px]">
+                <td colSpan={7} className="py-8 text-center text-slate-500 text-[12px] whitespace-nowrap">
                   未找到符合条件的班级数据
                 </td>
               </tr>
