@@ -17,7 +17,27 @@
   }
 
   .text-shadow-glow {
-    text-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+    text-shadow: 0 0 10px rgba(59, 130, 246, 0.7), 0 0 20px rgba(6, 182, 212, 0.5);
+  }
+
+  .text-shadow-cyan {
+    text-shadow: 0 0 12px rgba(6, 182, 212, 0.8), 0 0 24px rgba(59, 130, 246, 0.6);
+  }
+
+  .clip-header-trapezoid {
+    clip-path: polygon(0 0, 100% 0, 85% 100%, 15% 100%);
+  }
+
+  .clip-badge-trapezoid {
+    clip-path: polygon(0 0, 92% 0, 100% 100%, 0 100%);
+  }
+
+  .bg-cyber-grid {
+    background-image: 
+      radial-gradient(ellipse at 50% 0%, rgba(30, 58, 138, 0.35) 0%, rgba(2, 6, 23, 0.95) 75%),
+      linear-gradient(to right, rgba(30, 58, 138, 0.1) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(30, 58, 138, 0.1) 1px, transparent 1px);
+    background-size: 100% 100%, 40px 40px, 40px 40px;
   }
 }
 
@@ -55,6 +75,7 @@ svg * {
 *:focus-within {
   outline: none !important;
 }
+
 
 
 
