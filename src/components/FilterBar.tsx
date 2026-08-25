@@ -1,10 +1,85 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { filterOptions } from '../mockData';
 import { FilterState } from '../types';
+import { ChevronDown, Check, RotateCcw, Search as SearchIcon } from 'lucide-react';
 
 interface FilterBarProps {
   filter: FilterState;
   onChange: (filter: FilterState) => void;
+}
+
+interface CustomSelectProps {
+  options: { label: string; value: string }[];
+  value: string;
+  onChange: (val: string) => void;
+  widthClass?: string;
+}
+
+function CustomSelect({ options, value, onChange, widthClass = "w-40" }: CustomSelectProps) {
+  const [isOpen, setIsOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const selectedOption = options.find((opt) => opt.value === value) || options[0];
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  return (
+    <div ref={containerRef} className={`relative ${widthClass}`}>
+      {/* Trigger Button */}
+      <button
+        type="button"
+        onClick={() => setIsOpen(!isOpen)}
+        className={`w-full bg-[#071129] border transition-all duration-200 text-slate-200 text-xs px-3 py-1.5 rounded flex items-center justify-between shadow-sm outline-none cursor-pointer ${
+          isOpen
+            ? 'border-cyan-500 shadow-[0_0_10px_rgba(6,182,212,0.3)] bg-[#0d1b3e]'
+            : 'border-[#1e3a8a] hover:border-cyan-500/60 hover:bg-[#0a1838]'
+        }`}
+      >
+        <span className="truncate text-slate-200 font-medium">{selectedOption?.label}</span>
+        <ChevronDown
+          size={14}
+          className={`text-cyan-400 ml-1.5 transition-transform duration-200 flex-shrink-0 ${
+            isOpen ? 'rotate-180 text-cyan-300' : ''
+          }`}
+        />
+      </button>
+
+      {/* Dropdown Options Menu */}
+      {isOpen && (
+        <div className="absolute top-full left-0 mt-1 w-full z-50 bg-[#0a1738]/95 border border-cyan-500/50 shadow-[0_12px_28px_rgba(0,0,0,0.8)] rounded-md py-1 overflow-hidden backdrop-blur-md max-h-52 overflow-y-auto custom-scrollbar">
+          {options.map((opt) => {
+            const isSelected = opt.value === value;
+            return (
+              <div
+                key={opt.value}
+                onClick={() => {
+                  onChange(opt.value);
+                  setIsOpen(false);
+                }}
+                className={`px-3 py-1.5 text-xs transition-colors flex items-center justify-between cursor-pointer ${
+                  isSelected
+                    ? 'bg-[#1e3a8a] text-cyan-300 font-semibold border-l-2 border-cyan-400'
+                    : 'text-slate-300 hover:bg-[#142858] hover:text-slate-100'
+                }`}
+              >
+                <span className="truncate">{opt.label}</span>
+                {isSelected && <Check size={12} className="text-cyan-400 ml-1 flex-shrink-0" />}
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
 }
 
 export function FilterBar({ filter, onChange }: FilterBarProps) {
@@ -12,78 +87,66 @@ export function FilterBar({ filter, onChange }: FilterBarProps) {
     onChange({ ...filter, [key]: value });
   };
 
-  const selectClasses = "appearance-none bg-[#0a1532] border border-[#1e3a8a] text-slate-200 text-sm focus:outline-none focus:border-cyan-500 block w-40 px-3 py-1.5 pr-8 hover:border-[#2563eb] transition-colors";
-  
-  const SelectArrow = () => (
-    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-cyan-500">
-      <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-        <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
-      </svg>
-    </div>
-  );
+  const handleReset = () => {
+    onChange({
+      dimension: 'all',
+      term: '2025-spring-3',
+      classId: 'all',
+      courseId: 'all',
+    });
+  };
 
   return (
-    <div className="flex flex-col md:flex-row justify-between items-center px-2 text-sm z-40">
-      
+    <div className="flex flex-col lg:flex-row justify-between items-stretch lg:items-center gap-3 px-1 text-sm relative z-40">
       {/* Left: Dimension */}
       <div className="flex items-center space-x-3">
-        <span className="text-slate-400 font-medium">统计维度</span>
-        <div className="relative group">
-          <select 
-            value={filter.dimension} 
-            onChange={(e) => handleChange('dimension', e.target.value)}
-            className={selectClasses}
-          >
-            {filterOptions.dimensions.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
-          </select>
-          <SelectArrow />
-        </div>
+        <span className="text-slate-300 text-xs font-semibold whitespace-nowrap">统计维度</span>
+        <CustomSelect
+          options={filterOptions.dimensions}
+          value={filter.dimension}
+          onChange={(val) => handleChange('dimension', val)}
+          widthClass="w-36 sm:w-40"
+        />
       </div>
 
       {/* Right: Filters & Action Buttons */}
-      <div className="flex items-center space-x-3 bg-[#0a1532]/50 p-1 rounded-sm">
-        <span className="text-slate-400 font-medium ml-2">筛选条件</span>
-        
-        <div className="relative group">
-          <select 
-            value={filter.term} 
-            onChange={(e) => handleChange('term', e.target.value)}
-            className={selectClasses}
-          >
-            {filterOptions.terms.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
-          </select>
-          <SelectArrow />
-        </div>
+      <div className="flex flex-wrap items-center gap-2.5 bg-[#0a1532]/70 p-1.5 rounded border border-[#1e3a8a]/50">
+        <span className="text-slate-300 text-xs font-semibold ml-1 whitespace-nowrap">筛选条件</span>
 
-        <div className="relative group">
-          <select 
-            value={filter.classId} 
-            onChange={(e) => handleChange('classId', e.target.value)}
-            className={selectClasses}
-          >
-            {filterOptions.classes.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
-          </select>
-          <SelectArrow />
-        </div>
+        <CustomSelect
+          options={filterOptions.terms}
+          value={filter.term}
+          onChange={(val) => handleChange('term', val)}
+          widthClass="w-40 sm:w-44"
+        />
 
-        <div className="relative group">
-          <select 
-            value={filter.courseId} 
-            onChange={(e) => handleChange('courseId', e.target.value)}
-            className={selectClasses}
-          >
-            {filterOptions.courses.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
-          </select>
-          <SelectArrow />
-        </div>
+        <CustomSelect
+          options={filterOptions.classes}
+          value={filter.classId}
+          onChange={(val) => handleChange('classId', val)}
+          widthClass="w-36 sm:w-40"
+        />
 
-        <button className="px-5 py-1.5 bg-[#0ea5e9] hover:bg-[#0284c7] text-white font-medium transition-colors shadow-[0_0_8px_rgba(14,165,233,0.5)]">
-          查询
+        <CustomSelect
+          options={filterOptions.courses}
+          value={filter.courseId}
+          onChange={(val) => handleChange('courseId', val)}
+          widthClass="w-36 sm:w-40"
+        />
+
+        <button className="px-4 py-1.5 bg-[#0ea5e9] hover:bg-[#0284c7] text-white text-xs font-medium rounded transition-all duration-200 shadow-[0_0_10px_rgba(14,165,233,0.4)] hover:shadow-[0_0_14px_rgba(14,165,233,0.7)] flex items-center space-x-1 cursor-pointer">
+          <SearchIcon size={12} />
+          <span>查询</span>
         </button>
-        <button className="px-5 py-1.5 bg-transparent border border-[#1e3a8a] hover:bg-[#1e3a8a]/50 text-slate-300 font-medium transition-colors">
-          重置
+        <button
+          onClick={handleReset}
+          className="px-4 py-1.5 bg-[#071129] border border-[#1e3a8a] hover:bg-[#1e3a8a]/50 text-slate-300 hover:text-white text-xs font-medium rounded transition-colors flex items-center space-x-1 cursor-pointer"
+        >
+          <RotateCcw size={12} />
+          <span>重置</span>
         </button>
       </div>
     </div>
   );
 }
+
