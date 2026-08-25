@@ -12,11 +12,11 @@ interface DashboardPanelProps {
 export function DashboardPanel({ title, children, extra, className, contentClassName }: DashboardPanelProps) {
   return (
     <div className={cn(
-      "bg-[#06122d]/90 border border-[#1e3a8a]/60 rounded-md relative flex flex-col shadow-[0_4px_20px_rgba(0,0,0,0.4)] backdrop-blur-md overflow-hidden",
+      "bg-[#06122d]/90 border border-[#1e3a8a]/70 rounded-md relative flex flex-col shadow-panel-glow backdrop-blur-md overflow-hidden hover:border-cyan-500/50 transition-all duration-300",
       className
     )}>
       {/* Top subtle highlight line */}
-      <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#3b82f6]/40 to-transparent" />
+      <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-cyan-400/40 via-blue-500/40 to-transparent" />
 
       {/* Clean & Non-glaring Header */}
       <div className="flex justify-between items-center px-4 py-2.5 border-b border-[#1e3a8a]/50 bg-[#08183c]/80 rounded-t-md">

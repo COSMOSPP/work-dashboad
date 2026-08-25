@@ -21,9 +21,9 @@ export function Header() {
   };
 
   return (
-    <header className="relative w-full z-50 bg-[#05146A]/95 border-b border-[#1e3a8a]/70 shadow-[0_4px_20px_rgba(0,0,0,0.6)]">
+    <header className="relative w-full z-50 bg-[#020716]/95 border-b border-[#1e3a8a]/70 shadow-[0_4px_20px_rgba(0,0,0,0.6)]">
       {/* Top Nav Line */}
-      <div className="flex items-center justify-between px-6 py-2.5 bg-[#07197a]/80">
+      <div className="flex items-center justify-between px-6 py-2.5 bg-[#05112c]/80">
         {/* Top Left Logo & Title */}
         <div className="flex items-center space-x-6">
           <div className="flex items-center space-x-2.5">
