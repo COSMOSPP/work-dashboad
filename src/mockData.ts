@@ -25,15 +25,15 @@ export const filterOptions = {
 
 export const generateMetrics = (): MetricData[] => {
   return [
-    { id: "enrollment", title: "报名人数", value: "2,356", unit: "人", trend: 12.5, trendIsPercent: true, icon: "users", color: "#3b82f6" },
+    { id: "enrollment", title: "报名人数", value: "2,356", unit: "人", trend: 12.5, trendIsPercent: true, icon: "users", color: "#06b6d4" },
     { id: "training", title: "在训人数", value: "1,896", unit: "人", trend: 8.2, trendIsPercent: true, icon: "user-check", color: "#3b82f6" },
-    { id: "classes", title: "班级数", value: "56", unit: "个", trend: 5, trendIsPercent: false, icon: "monitor-play", color: "#3b82f6" },
-    { id: "teachers", title: "师资数", value: "89", unit: "人", trend: 3, trendIsPercent: false, icon: "graduation-cap", color: "#3b82f6" },
-    { id: "courses", title: "课程数", value: "128", unit: "门", trend: 7, trendIsPercent: false, icon: "book-open", color: "#3b82f6" },
-    { id: "attendance", title: "平均出勤率", value: "92.6", unit: "%", trend: 2.6, trendIsPercent: true, icon: "calendar-check", color: "#06b6d4" },
-    { id: "completion", title: "完课率 / 通过率", value: "87.3", unit: "%", trend: 4.1, trendIsPercent: true, icon: "check-square", color: "#10b981" },
-    { id: "evaluation", title: "课程评价", value: "4.7", unit: "分", trend: 0.2, trendIsPercent: false, icon: "message-square", color: "#3b82f6" },
-    { id: "works", title: "作品数量", value: "1,236", unit: "个", trend: 15.3, trendIsPercent: true, icon: "folder-open", color: "#f59e0b" },
+    { id: "classes", title: "班级数", value: "56", unit: "个", trend: 5, trendIsPercent: false, icon: "layout-grid", color: "#8b5cf6" },
+    { id: "teachers", title: "师资数", value: "89", unit: "人", trend: 3, trendIsPercent: false, icon: "award", color: "#f59e0b" },
+    { id: "courses", title: "课程数", value: "128", unit: "门", trend: 7, trendIsPercent: false, icon: "book-open-check", color: "#6366f1" },
+    { id: "attendance", title: "平均出勤率", value: "92.6", unit: "%", trend: 2.6, trendIsPercent: true, icon: "calendar-check-2", color: "#14b8a6" },
+    { id: "completion", title: "完课率 / 通过率", value: "87.3", unit: "%", trend: 4.1, trendIsPercent: true, icon: "trophy", color: "#10b981" },
+    { id: "evaluation", title: "课程评价", value: "4.7", unit: "分", trend: 0.2, trendIsPercent: false, icon: "star", color: "#f43f5e" },
+    { id: "works", title: "作品数量", value: "1,236", unit: "个", trend: 15.3, trendIsPercent: true, icon: "flame", color: "#f97316" },
   ];
 };
 
