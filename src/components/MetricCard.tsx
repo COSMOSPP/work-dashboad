@@ -132,8 +132,7 @@ export function MetricCard({ data, index }: MetricCardProps) {
       {/* Right: Content Block (Title, Value, Trend) */}
       <div className="flex-1 flex flex-col justify-center min-w-0 relative z-10">
         {/* Title */}
-        <div className="flex items-center space-x-1.5 mb-0.5">
-          <span className="w-1 h-1 rounded-full bg-cyan-400 shadow-[0_0_6px_rgba(6,182,212,0.8)] flex-shrink-0" />
+        <div className="mb-0.5">
           <h3 className="text-slate-300 text-xs font-semibold tracking-wider truncate">
             {data.title}
           </h3>
