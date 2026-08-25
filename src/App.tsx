@@ -31,7 +31,7 @@ export default function App() {
   const metrics = useMemo(() => generateMetrics(), []);
 
   return (
-    <div className="min-h-screen bg-[#020716] bg-cyber-grid text-slate-200 font-sans flex flex-col overflow-x-hidden selection:bg-cyan-500/30 relative">
+    <div className="min-h-screen bg-[#05146A] bg-cyber-grid text-slate-200 font-sans flex flex-col overflow-x-hidden selection:bg-cyan-500/30 relative">
       <Header />
       
       <main className="flex-1 w-full max-w-[1920px] mx-auto p-[20px] flex flex-col">
