@@ -1,0 +1,61 @@
+@import "tailwindcss";
+
+@layer utilities {
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #1e3a8a;
+    border-radius: 10px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #3b82f6;
+  }
+
+  .text-shadow-glow {
+    text-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+  }
+}
+
+/* Remove default focus outline and blue/white border glow on chart click */
+.recharts-wrapper,
+.recharts-wrapper:focus,
+.recharts-wrapper:focus-visible,
+.recharts-wrapper:active,
+.recharts-wrapper *,
+.recharts-surface,
+.recharts-surface:focus,
+.recharts-surface:focus-visible,
+.recharts-surface:active,
+.recharts-surface *,
+.recharts-responsive-container,
+.recharts-responsive-container:focus,
+.recharts-responsive-container:focus-visible,
+.recharts-responsive-container *,
+svg,
+svg:focus,
+svg:focus-visible,
+svg:active,
+svg * {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Ensure chart hover tooltips always sit on top */
+.recharts-tooltip-wrapper {
+  z-index: 9999 !important;
+}
+
+*:focus,
+*:focus-visible,
+*:focus-within {
+  outline: none !important;
+}
+
+
+
+
