@@ -105,7 +105,7 @@ export function MetricCard({ data, index }: MetricCardProps) {
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.04, duration: 0.4 }}
-      className="relative flex flex-col justify-between px-3 py-3 bg-[#051333]/90 border border-[#1e3a8a]/60 rounded-lg shadow-[0_4px_20px_rgba(0,0,0,0.5)] group hover:border-cyan-500/80 hover:shadow-[0_0_20px_rgba(6,182,212,0.25)] transition-all duration-300 overflow-hidden"
+      className="relative flex items-center p-3 bg-[#051333]/90 border border-[#1e3a8a]/60 rounded-lg shadow-[0_4px_20px_rgba(0,0,0,0.5)] group hover:border-cyan-500/80 hover:shadow-[0_0_20px_rgba(6,182,212,0.25)] transition-all duration-300 overflow-hidden"
     >
       {/* Top micro line with theme color glow */}
       <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-cyan-400/60 to-transparent group-hover:via-cyan-400 transition-colors" />
@@ -116,46 +116,47 @@ export function MetricCard({ data, index }: MetricCardProps) {
       <div className="absolute bottom-0 left-0 w-1.5 h-1.5 border-b border-l border-cyan-400/60" />
       <div className="absolute bottom-0 right-0 w-1.5 h-1.5 border-b border-r border-cyan-400/60" />
 
-      <div className="flex flex-col items-center relative z-10 space-y-1">
-        {/* Title Header */}
-        <div className="flex items-center justify-center space-x-1.5 w-full">
-          <span className="w-1 h-1 rounded-full bg-cyan-400 shadow-[0_0_6px_rgba(6,182,212,0.8)]" />
-          <h3 className="text-slate-300 text-xs font-semibold tracking-wider text-center">
+      {/* Left: 3D Futuristic Icon Housing Badge */}
+      <div className="mr-3 relative flex-shrink-0 flex items-center justify-center">
+        <div className={cn(
+          "w-10 h-10 rounded-lg bg-gradient-to-br border flex items-center justify-center transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6 backdrop-blur-xs relative",
+          theme.bgGradient,
+          theme.borderColor,
+          theme.glowColor
+        )}>
+          <div className="absolute inset-0 bg-white/5 rounded-lg" />
+          <IconComponent size={19} className={cn("stroke-[2.2]", theme.textColor)} />
+        </div>
+      </div>
+
+      {/* Right: Content Block (Title, Value, Trend) */}
+      <div className="flex-1 flex flex-col justify-center min-w-0 relative z-10">
+        {/* Title */}
+        <div className="flex items-center space-x-1.5 mb-0.5">
+          <span className="w-1 h-1 rounded-full bg-cyan-400 shadow-[0_0_6px_rgba(6,182,212,0.8)] flex-shrink-0" />
+          <h3 className="text-slate-300 text-xs font-semibold tracking-wider truncate">
             {data.title}
           </h3>
         </div>
 
-        {/* Center Futuristic Icon Housing Badge */}
-        <div className="my-1 relative flex items-center justify-center">
-          <div className={cn(
-            "w-9 h-9 rounded-md bg-gradient-to-br border flex items-center justify-center transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6 backdrop-blur-xs relative",
-            theme.bgGradient,
-            theme.borderColor,
-            theme.glowColor
-          )}>
-            <div className="absolute inset-0 bg-white/5 rounded-md" />
-            <IconComponent size={17} className={cn("stroke-[2.2]", theme.textColor)} />
-          </div>
-        </div>
-        
         {/* Metric Value */}
-        <div className="flex items-baseline justify-center">
-          <span className="text-xl sm:text-2xl font-extrabold text-white tabular-nums tracking-tight font-mono text-shadow-glow">
+        <div className="flex items-baseline space-x-1 leading-tight">
+          <span className="text-lg sm:text-xl font-extrabold text-white tabular-nums tracking-tight font-mono text-shadow-glow">
             {data.value}
           </span>
           {data.unit && (
-            <span className="text-slate-400 text-[10px] ml-1 font-sans font-medium">{data.unit}</span>
+            <span className="text-slate-400 text-[10px] font-sans font-medium">{data.unit}</span>
           )}
         </div>
 
         {/* Trend Indicator */}
-        <div className="text-[10px] text-slate-400 flex items-center font-sans pt-0.5">
-          <span>较上期</span>
+        <div className="text-[10px] text-slate-400 flex items-center font-sans mt-0.5">
+          <span className="mr-1 scale-95 origin-left">较上期</span>
           <span className={cn(
-            "ml-1 flex items-center font-bold font-mono text-[10px]",
+            "flex items-center font-bold font-mono text-[10px]",
             isPositive ? "text-[#10b981]" : "text-[#ef4444]"
           )}>
-            {isPositive ? '▲' : '▼'} {Math.abs(data.trend)}{data.trendIsPercent ? '%' : ''}
+            {isPositive ? '▲' : '▼'}{Math.abs(data.trend)}{data.trendIsPercent ? '%' : ''}
           </span>
         </div>
       </div>
